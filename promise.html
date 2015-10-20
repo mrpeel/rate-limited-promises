@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <meta name="description" content="A sample application which uses the SMES public API.">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title id="bar-title">Promise Me</title>
+
+
+</head>
+
+<body>
+
+
+    <header class="mdl-layout__header">
+        <!-- Top row, always visible -->
+        <div class="mdl-layout__header-row">
+            <!-- Title -->
+            <div id="load-bar" class="loader"></div>
+            <span class="mdl-layout-title title-text" id="page-title">Promise Me</span>
+            <div id="print-sub-heading" class="mdl-typography--font-light mdl-typography--title print-only">
+            </div>
+
+        </div>
+    </header>
+
+
+
+
+
+    <script src="ratelimitpromises.js"></script>
+    <script>
+        /*var promiseQueue = [];
+                                var maxRequestsPerSecond = 0.5;
+                                var lastQueueExecuteStartTime = 0
+
+                                var queuePromise = function(promiseToQueue) {
+                                    return new Promise(function(resolve, reject) {
+                                        promiseQueue.push({
+                                            resolve: resolve,
+                                            reject: reject,
+                                            promise: promiseToQueue
+                                        });
+
+                                        processQueue();
+                                    });
+
+
+                                };
+
+                                var executePromiseFromQueue = function() {
+                                    console.log("Executing: " + new Date().toISOString());
+                                    lastQueueExecuteStartTime = Date.now();
+
+                                    var promiseToExecute = promiseQueue.shift();
+                                    promiseToExecute.promise().then(function(r) {
+                                        promiseToExecute.resolve(r);
+                                    }).catch(function(r) {
+                                        promiseToExecute.reject(r);
+                                    });
+                                };
+
+                                var processQueue = function() {
+                                    var inc = 1000 / maxRequestsPerSecond,
+                                        elapsed = Date.now() - lastQueueExecuteStartTime;
+
+                                    if (promiseQueue.length > 0) {
+                                        if (elapsed >= inc) {
+                                            console.log("Running from process queue: " + new Date().toISOString());
+                                            executePromiseFromQueue();
+                                        } else {
+                                            window.setTimeout(function() {
+                                                console.log("Rescheduling process queue execution: " + new Date().toISOString());
+                                                processQueue();
+                                                //Reschedule for difference between current date time and expected date time for next execution - add 100 ms to allow for execution time
+                                            }, inc - elapsed + 100);
+                                        }
+
+                                    }
+
+                                };*/
+
+        var rateLimitedPromises = new RateLimitedPromises({
+            noRequests: 2,
+            perNumberOfSeconds: 10
+        });
+
+        var promiseToResolve = function() {
+            return new Promise(function(resolve, reject) {
+                resolve(new Date().toISOString() + " Made it");
+            });
+        };
+
+        var promiseToReject = function() {
+            return new Promise(function(resolve, reject) {
+                reject(new Date().toISOString() + " Not gonna happen");
+            });
+        };
+
+
+        /*var outsidePromise = function(promiseToRun) {
+            return new Promise(function(resolve, reject) {
+                promiseToRun().then(function(r) {
+                    resolve(r);
+                }).catch(function(r) {
+                    reject(r);
+                });
+
+            });
+
+        };
+
+        outsidePromise(insidePromise).then(function(pResult) {
+            console.log("Result: " + pResult)
+
+        }).catch(function(err) {
+            console.log("Error: " + err)
+        });*/
+
+        rateLimitedPromises.queuePromise(promiseToResolve).then(function(pResult) {
+            console.log("Result: " + pResult)
+
+        }).catch(function(err) {
+            console.log("Error: " + err)
+        });
+
+        rateLimitedPromises.queuePromise(promiseToReject).then(function(pResult) {
+            console.log("Result: " + pResult)
+
+        }).catch(function(err) {
+            console.log("Error: " + err)
+        });
+        rateLimitedPromises.queuePromise(promiseToResolve).then(function(pResult) {
+            console.log("Result: " + pResult)
+
+        }).catch(function(err) {
+            console.log("Error: " + err)
+        });
+        rateLimitedPromises.queuePromise(promiseToReject).then(function(pResult) {
+            console.log("Result: " + pResult)
+
+        }).catch(function(err) {
+            console.log("Error: " + err)
+        });
+
+
+        rateLimitedPromises.queuePromise(promiseToResolve).then(function(pResult) {
+            console.log("Result: " + pResult)
+
+        }).catch(function(err) {
+            console.log("Error: " + err)
+        });
+
+        rateLimitedPromises.queuePromise(promiseToReject).then(function(pResult) {
+            console.log("Result: " + pResult)
+
+        }).catch(function(err) {
+            console.log("Error: " + err)
+        });
+        rateLimitedPromises.queuePromise(promiseToResolve).then(function(pResult) {
+            console.log("Result: " + pResult)
+
+        }).catch(function(err) {
+            console.log("Error: " + err)
+        });
+        rateLimitedPromises.queuePromise(promiseToReject).then(function(pResult) {
+            console.log("Result: " + pResult)
+
+        }).catch(function(err) {
+            console.log("Error: " + err)
+        });
+
+    </script>
+
+</body>
+
+</html>
